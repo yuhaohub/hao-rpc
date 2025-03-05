@@ -19,6 +19,13 @@
             <artifactId>hutool-all</artifactId>
             <version>5.8.16</version>
         </dependency>
+        <!--snakeyaml 库来解析 YAML 文件-->
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.33</version>
+        </dependency>
+
         <!-- https://projectlombok.org/ -->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -26,5 +33,19 @@
             <version>1.18.30</version>
             <scope>provided</scope>
         </dependency>
+        <!-- 日志 -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.3.12</version>
+        </dependency>
+        <!-- 单元测试-->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>RELEASE</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 </project>
