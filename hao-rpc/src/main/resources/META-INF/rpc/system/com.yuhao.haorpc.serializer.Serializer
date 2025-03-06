@@ -1,0 +1,4 @@
+jdk=com.yuhao.haorpc.serializer.JdkSerializer
+hessian=com.yuhao.haorpc.serializer.HessianSerializer
+json=com.yuhao.haorpc.serializer.JsonSerializer
+kryo=com.yuhao.haorpc.serializer.KryoSerializer

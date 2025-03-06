@@ -1,10 +1,11 @@
 package com.yuhao.haorpc.server;
 
+import com.yuhao.haorpc.RpcApplication;
 import com.yuhao.haorpc.model.RpcRequest;
 import com.yuhao.haorpc.model.RpcResponse;
 import com.yuhao.haorpc.registry.LocalRegistry;
-import com.yuhao.haorpc.serializer.JdkSerializer;
 import com.yuhao.haorpc.serializer.Serializer;
+import com.yuhao.haorpc.serializer.SerializerFactory;
 import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpServerRequest;
@@ -23,7 +24,9 @@ public class HttpServerHandler implements Handler<HttpServerRequest> {
 //    对返回结果进行封装和序列化，并写入到响应中。
     @Override
     public void handle(HttpServerRequest httpServerRequest) {
-        final Serializer serializer = new JdkSerializer();
+        //final Serializer serializer = new JdkSerializer();
+        // 序列化器(可通过全局配置选择 JSON、Kryo、Hessian)
+        final Serializer serializer = SerializerFactory.getInstance(RpcApplication.getRpcConfig().getSerializer());
         // 记录日志
         System.out.println("Received request: " + httpServerRequest.method() + " " + httpServerRequest.uri());
         httpServerRequest.bodyHandler(body -> {

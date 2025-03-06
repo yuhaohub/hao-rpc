@@ -17,7 +17,7 @@ public class MockServiceProxy implements InvocationHandler {
         log.info("mock proxy: {}", methodReturnType);
         return getDefaultObject(methodReturnType);
     }
-
+    //使用javafaker伪造生成数据库
     private Object getDefaultObject(Class<?> type) {
         // 基本类型
         if (type.isPrimitive()) {

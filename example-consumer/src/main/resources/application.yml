@@ -1,5 +1,7 @@
-# rpc\u914D\u7F6E,\u4F7F\u7528hutool\u7684Setting\u7C7B\u52A0\u8F7D\u6587\u4EF6\u914D\u7F6E\u652F\u6301\u4E2D\u6587
+# rpc配置,使用hutool的Setting类加载文件配置支持中文
 rpc:
   name: "haorpc"
-  version: "yuhao\u4E13\u5C5E\u677F\u672C"
+  version: "yuhao的专属版本"
   serverPort: 8085
+  mock: false
+  serializer: hessian

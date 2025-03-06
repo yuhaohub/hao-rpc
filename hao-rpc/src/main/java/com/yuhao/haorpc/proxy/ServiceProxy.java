@@ -2,10 +2,11 @@ package com.yuhao.haorpc.proxy;
 
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
+import com.yuhao.haorpc.RpcApplication;
 import com.yuhao.haorpc.model.RpcRequest;
 import com.yuhao.haorpc.model.RpcResponse;
-import com.yuhao.haorpc.serializer.JdkSerializer;
 import com.yuhao.haorpc.serializer.Serializer;
+import com.yuhao.haorpc.serializer.SerializerFactory;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
@@ -24,8 +25,18 @@ public class ServiceProxy implements InvocationHandler {
      */
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+
+//        /**
+//         * 使用系统内置的序列化器
+//         */
+//        Serializer serializer = null;
+//        ServiceLoader<Serializer> serviceLoader = ServiceLoader.load(Serializer.class);
+//        for (Serializer ser : serviceLoader) {
+//            serializer = ser;
+//            break;
+//        }
         // 指定序列化器
-        Serializer serializer = new JdkSerializer();
+        final Serializer serializer = SerializerFactory.getInstance(RpcApplication.getRpcConfig().getSerializer());
 
         // 构造请求
         RpcRequest rpcRequest = RpcRequest.builder()
