@@ -1,13 +1,21 @@
 package com.yuhao.haorpc.utils;
 
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.setting.dialect.Props;
+import cn.hutool.setting.yaml.YamlUtil;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 配置工具类，加载配置
  */
 public class ConfigUtils {
+
+    private static final List<String> SUPPORTED_EXTENSIONS = Arrays.asList(".properties", ".yml", ".yaml");
     public static <T> T loadConfig(Class<T> rpcClass,String prefix) {
         return loadConfig(rpcClass,prefix,"");
 
@@ -15,24 +23,33 @@ public class ConfigUtils {
 
 
     public static <T> T loadConfig(Class<T> rpcClass,String prefix,String environment) {
-        StringBuilder configFile = new StringBuilder("application");
-        if(StrUtil.isNotBlank(environment)){
-            configFile.append("-").append(environment);
+
+        StringBuilder baseFileName = new StringBuilder("application");
+        if (StrUtil.isNotBlank(environment)) {
+            baseFileName.append("-").append(environment);
         }
-        configFile.append(".properties");
-        Props props = new Props(configFile.toString());
-        props.autoLoad(true);
-        return props.toBean(rpcClass,prefix);
 
-
-//        configFile.append(".yml");
-//        // 使用 YamlUtil 加载配置文件并转换为 Dict 对象
-//        Dict dict = YamlUtil.loadByPath(configFile.toString());
-//        // 获取指定前缀的配置项并转换为目标类实例
-//        T configInstance = BeanUtil.copyProperties(dict.getBean(prefix), rpcClass);
-//
-//        return configInstance;
-
+        for (String extension : SUPPORTED_EXTENSIONS) {
+            String configFileName = baseFileName + extension;
+            try {
+                if (".properties".equals(extension)) {
+                    Props props = new Props(configFileName);
+                    props.autoLoad(true);
+                    return props.toBean(rpcClass, prefix);
+                } else if (".yml".equals(extension) || ".yaml".equals(extension)) {
+                    Dict dict = YamlUtil.loadByPath(configFileName);
+                    if (dict != null) {
+                        return BeanUtil.copyProperties(dict.getBean(prefix), rpcClass);
+                    }
+                }
+            } catch (Exception e) {
+                // 若加载失败，继续尝试下一个后缀的文件
+                continue;
+            }
+        }
+        return null;
     }
+
+
 
 }
