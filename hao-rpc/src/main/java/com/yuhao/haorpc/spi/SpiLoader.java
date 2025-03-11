@@ -78,14 +78,14 @@ public class SpiLoader {
         Class<?> implClass = keyClassMap.get(key);
         // 从实例缓存中加载指定类型的实例
         String implClassName = implClass.getName();
-//        if (!instanceCache.containsKey(implClassName)) {
-//            try {
-//                instanceCache.put(implClassName, implClass.newInstance());
-//            } catch (InstantiationException | IllegalAccessException e) {
-//                String errorMsg = String.format("%s 类实例化失败", implClassName);
-//                throw new RuntimeException(errorMsg, e);
-//            }
-//        }
+        if (!instanceCache.containsKey(implClassName)) {
+            try {
+                instanceCache.put(implClassName, implClass.newInstance());
+            } catch (InstantiationException | IllegalAccessException e) {
+                String errorMsg = String.format("%s 类实例化失败", implClassName);
+                throw new RuntimeException(errorMsg, e);
+            }
+        }
         //双重校验锁机制(DCL)实现懒加载
         if (!instanceCache.containsKey(implClassName)) {
             synchronized (SpiLoader.class) {
@@ -135,4 +135,5 @@ public class SpiLoader {
         loaderMap.put(loadClass.getName(), keyClassMap);
         return keyClassMap;
     }
+
 }

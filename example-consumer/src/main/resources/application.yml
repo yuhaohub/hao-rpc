@@ -5,3 +5,4 @@ rpc:
   serverPort: 8085
   mock: false
   serializer: hessian
+  register: zookeeper
