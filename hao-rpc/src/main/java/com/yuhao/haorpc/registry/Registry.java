@@ -49,5 +49,11 @@ public interface Registry {
      */
     void heartBeat();
 
+    /**
+     * 监听（消费端）
+     *
+     * @param serviceNodeKey
+     */
+    void watch(String serviceNodeKey);
 
 }

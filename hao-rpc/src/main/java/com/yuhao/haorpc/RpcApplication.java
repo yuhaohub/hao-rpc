@@ -20,7 +20,7 @@ public class RpcApplication {
     public static void init(){
         RpcConfig newRpcConfig;
         try {
-            newRpcConfig = ConfigUtils.loadConfig(RpcConfig.class, RpcConstant.DEFAULT_RPC_CONFIG_NAME);
+            newRpcConfig = ConfigUtils.loadConfig(RpcConfig.class, RpcConstant.DEFAULT_RPC_CONFIG_Prefix);
         } catch (Exception e) {
             newRpcConfig = new RpcConfig();
         }
