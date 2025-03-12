@@ -8,8 +8,7 @@ import com.yuhao.haorpc.model.ServiceMetaInfo;
 import com.yuhao.haorpc.registry.LocalRegistry;
 import com.yuhao.haorpc.registry.Registry;
 import com.yuhao.haorpc.registry.RegistryFactory;
-import com.yuhao.haorpc.server.HttpServer;
-import com.yuhao.haorpc.server.VertxHttpServer;
+import com.yuhao.haorpc.server.tcp.VertxTcpServer;
 
 public class ProviderExp {
 
@@ -33,7 +32,10 @@ public class ProviderExp {
             throw new RuntimeException(e);
         }
         // 启动 web 服务
-        HttpServer httpServer = new VertxHttpServer();
-        httpServer.doStart(RpcApplication.getRpcConfig().getServerPort());
+//        HttpServer httpServer = new VertxHttpServer();
+//        httpServer.doStart(RpcApplication.getRpcConfig().getServerPort());
+        //使用Tcp服务
+        VertxTcpServer vertxTcpServer = new VertxTcpServer();
+        vertxTcpServer.doStart(RpcApplication.getRpcConfig().getServerPort());
     }
 }
