@@ -4,6 +4,8 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.IdUtil;
 import com.yuhao.haorpc.RpcApplication;
 import com.yuhao.haorpc.config.RpcConfig;
+import com.yuhao.haorpc.loadbalancer.LoadBalancer;
+import com.yuhao.haorpc.loadbalancer.LoadBalancerFactory;
 import com.yuhao.haorpc.model.RpcRequest;
 import com.yuhao.haorpc.model.RpcResponse;
 import com.yuhao.haorpc.model.ServiceMetaInfo;
@@ -21,7 +23,9 @@ import io.vertx.core.net.NetSocket;
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -71,8 +75,12 @@ public class ServiceProxy implements InvocationHandler {
             if (CollUtil.isEmpty(serviceMetaInfoList)) {
                 throw new RuntimeException("暂无服务地址");
             }
-            // 暂时先取第一个
-            ServiceMetaInfo selectedServiceMetaInfo = serviceMetaInfoList.get(0);
+            // 使用负载均衡算法选择服务提供者（负载均衡）
+            LoadBalancer loadBalancer = LoadBalancerFactory.getInstance(rpcConfig.getLoadBalancer());
+            // 将调用方法名（请求路径）作为负载均衡参数
+            Map<String, Object> requestParams = new HashMap<>();
+            requestParams.put("methodName", rpcRequest.getMethodName());
+            ServiceMetaInfo selectedServiceMetaInfo = loadBalancer.select(requestParams, serviceMetaInfoList);
 
             // 发送 TCP 请求
             Vertx vertx = Vertx.vertx();
@@ -120,7 +128,7 @@ public class ServiceProxy implements InvocationHandler {
                     });
 
             RpcResponse rpcResponse = responseFuture.get();
-            // 记得关闭连接
+            // 关闭连接
             netClient.close();
             return rpcResponse.getData();
         } catch (IOException e) {
