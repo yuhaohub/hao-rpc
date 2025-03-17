@@ -5,6 +5,8 @@ import com.yuhao.haorpc.RpcApplication;
 import com.yuhao.haorpc.config.RpcConfig;
 import com.yuhao.haorpc.fault.retry.RetryStrategy;
 import com.yuhao.haorpc.fault.retry.RetryStrategyFactory;
+import com.yuhao.haorpc.fault.tolerant.TolerantStrategy;
+import com.yuhao.haorpc.fault.tolerant.TolerantStrategyFactory;
 import com.yuhao.haorpc.loadbalancer.LoadBalancer;
 import com.yuhao.haorpc.loadbalancer.LoadBalancerFactory;
 import com.yuhao.haorpc.model.RpcRequest;
@@ -16,7 +18,6 @@ import com.yuhao.haorpc.serializer.Serializer;
 import com.yuhao.haorpc.serializer.SerializerFactory;
 import com.yuhao.haorpc.server.tcp.VertxTcpClient;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -56,7 +57,7 @@ public class ServiceProxy implements InvocationHandler {
                 .parameterTypes(method.getParameterTypes())
                 .args(args)
                 .build();
-        try {
+
             // 序列化
             byte[] bodyBytes = serializer.serialize(rpcRequest);
             // 发送请求
@@ -79,16 +80,18 @@ public class ServiceProxy implements InvocationHandler {
 
             // 发送 TCP 请求
             //使用重试机制
+            RpcResponse rpcResponse ;
+        try {
             RetryStrategy retryStrategy = RetryStrategyFactory.getInstance(rpcConfig.getRetryStrategy());
-            RpcResponse rpcResponse = retryStrategy.doRetry(() ->
+            rpcResponse = retryStrategy.doRetry(() ->
                     VertxTcpClient.doRequest(rpcRequest, selectedServiceMetaInfo)
             );
-            return rpcResponse.getData();
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            // 容错机制
+            TolerantStrategy tolerantStrategy = TolerantStrategyFactory.getInstance(rpcConfig.getTolerantStrategy());
+            rpcResponse = tolerantStrategy.doTolerant(null, e);
         }
 
-        return null;
+        return rpcResponse.getData();
     }
 }

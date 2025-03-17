@@ -1,0 +1,2 @@
+failFast=com.yuhao.haorpc.fault.tolerant.FailFastTolerantStrategy
+failSafe=com.yuhao.haorpc.fault.tolerant.FailSafeTolerantStrategy

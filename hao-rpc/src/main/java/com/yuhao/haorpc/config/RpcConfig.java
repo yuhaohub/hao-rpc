@@ -2,6 +2,7 @@ package com.yuhao.haorpc.config;
 
 
 import com.yuhao.haorpc.fault.retry.RetryStrategyKeys;
+import com.yuhao.haorpc.fault.tolerant.TolerantStrategyKeys;
 import com.yuhao.haorpc.loadbalancer.LoadBalancerKeys;
 import com.yuhao.haorpc.serializer.SerializerKeys;
 import lombok.Data;
@@ -49,4 +50,9 @@ public class RpcConfig {
      * 重试策略
      */
     private String retryStrategy = RetryStrategyKeys.FIXED_INTERVAL;
+
+    /**
+     * 容错策略
+     */
+    private String tolerantStrategy = TolerantStrategyKeys.FAIL_FAST;
 }
