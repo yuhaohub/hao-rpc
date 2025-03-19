@@ -7,6 +7,7 @@
       <module fileurl="file://$PROJECT_DIR$/example-provider/example-provider.iml" filepath="$PROJECT_DIR$/example-provider/example-provider.iml" />
       <module fileurl="file://$PROJECT_DIR$/hao-rpc/hao-rpc.iml" filepath="$PROJECT_DIR$/hao-rpc/hao-rpc.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/rpc.iml" filepath="$PROJECT_DIR$/.idea/rpc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spring-boot-starter/spring-boot-starter.iml" filepath="$PROJECT_DIR$/spring-boot-starter/spring-boot-starter.iml" />
     </modules>
   </component>
 </project>

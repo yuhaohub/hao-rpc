@@ -10,6 +10,7 @@
         <option value="$PROJECT_DIR$/example-common/pom.xml" />
         <option value="$PROJECT_DIR$/example-provider/pom.xml" />
         <option value="$PROJECT_DIR$/hao-rpc/pom.xml" />
+        <option value="$PROJECT_DIR$/spring-boot-starter/pom.xml" />
       </list>
     </option>
   </component>
