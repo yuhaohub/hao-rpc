@@ -12,6 +12,7 @@ import org.springframework.core.type.AnnotationMetadata;
 @Slf4j
 public class RpcInitBootstrap implements ImportBeanDefinitionRegistrar {
 
+
     /**
      * Spring 初始化时执行，初始化 RPC 框架
      *

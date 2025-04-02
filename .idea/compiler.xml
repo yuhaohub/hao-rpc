@@ -19,7 +19,7 @@
       <module name="example-consumer" target="11" />
       <module name="example-provider" target="11" />
       <module name="hao-rpc" target="11" />
-      <module name="spring-boot-starter" target="1.8" />
+      <module name="spring-boot-starter" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>
